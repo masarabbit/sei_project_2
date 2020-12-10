@@ -6,6 +6,171 @@
   filter: sepia(100) hue-rotate(180deg) brightness(20%);
 }
 
-// .motion {
+.fixed {
+  background-color: rgb(184, 161, 161);
+}
 
-// }
+.columns.is-multiline {
+  overflow-y: scroll;
+  height: 80vh;
+}
+
+form {
+  display: flex;
+  border: 1px solid red;
+}
+
+.type_indicator {
+  background-color: grey;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+
+  img {
+    height: 30px;
+    width: auto;
+    margin: 5px 5px;
+  }
+}
+
+
+
+.input {
+  width: 300px;
+  margin-right: 10px;
+}
+
+.name {
+  text-transform: capitalize;
+}
+
+.evolution-chain {
+  display: flex;
+  justify-content: space-evenly;
+  // border: red 1px solid;
+  div {
+    display: flex;
+    flex-direction: column;
+  }
+
+}
+
+.selected {
+  color: rgb(43, 91, 163);
+}
+
+.selected > img {
+  position: relative;
+  animation: bopping infinite .5s;
+}
+
+@keyframes bopping {
+  0% {
+    top: 0;
+  }
+  50% {
+    top: -5px;
+  }
+  100% {
+    top: 0;
+  }
+}
+
+
+img.bigger{
+  height: 500px;
+  width: auto;
+}
+
+.stats {
+  text-transform: uppercase;
+}
+
+.type {
+  padding: 5px;
+  border-radius: 20px;
+  background-color: grey;
+  color: white;
+  width: 100px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.grass {
+  background-color: green;
+}
+
+.electric {
+  color: black;
+  background-color: rgb(252, 219, 36);
+}
+
+.fire {
+  background-color: rgb(247, 69, 15);
+}
+
+.poison {
+  background-color: rgb(122, 16, 155);
+}
+
+.ghost {
+  background-color: rgb(31, 9, 82);
+}
+
+.dark {
+  background-color: rgb(20, 19, 22);
+}
+
+.psychic {
+  background-color: rgb(190, 24, 177);
+}
+
+.fairy {
+  background-color: rgb(250, 183, 239);
+}
+
+.steel {
+  background-color: rgb(128, 128, 128);
+}
+
+.water {
+  background-color: rgb(48, 161, 236);
+}
+
+.ice {
+  color: rgb(6, 46, 99); 
+  background-color: rgb(150, 209, 248);
+}
+
+.flying {
+  background-color: rgb(180, 130, 107);
+}
+
+.ground {
+  background-color: rgb(94, 45, 43);
+}
+
+.fighting {
+  background-color: rgb(94, 78, 57);
+}
+
+.rock {
+  background-color: rgb(133, 125, 89);
+}
+
+
+.dragon {
+  background-color: rgb(45, 100, 91);
+}
+
+.bug {
+  color: green;
+  background-color: rgb(136, 245, 136);
+}
+
+.normal {
+  color: brown;
+  background-color: rgb(253, 222, 182);
+}
+
