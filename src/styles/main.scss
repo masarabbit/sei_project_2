@@ -1,9 +1,29 @@
 
 @import '~bulma/bulma.sass';
 
+body {
+  color: black;
+}
+
+img.loading {
+  height: 40px;
+  width: 40px;
+  animation: rotating infinite 1s;
+}
+
+@keyframes rotating {
+  0% { transform: rotate(0); }
+  100% { transform: rotate(360deg); } 
+}
 
 .shadow {
-  filter: sepia(100) hue-rotate(180deg) brightness(20%);
+  filter: sepia(100) hue-rotate(180deg) brightness(40%);
+}
+
+.shadow:hover {
+  filter: sepia(0) hue-rotate(0deg) brightness(100%);
+  position: relative;
+  animation: bopping infinite .5s;
 }
 
 .fixed {
@@ -11,13 +31,20 @@
 }
 
 .columns.is-multiline {
+  margin-top: 0px;
   overflow-y: scroll;
-  height: 80vh;
+  height: 90vh;
+  // background-color:rgba(255, 255, 255, 0.274);
 }
 
 form {
   display: flex;
-  border: 1px solid red;
+  justify-content: space-evenly;
+  // border: 1px solid red;
+}
+
+.input {
+  width: 230px;
 }
 
 .type_indicator {
@@ -28,18 +55,118 @@ form {
   margin-left: 10px;
 
   img {
-    height: 30px;
+    height: 26px;
     width: auto;
-    margin: 5px 5px;
+    margin: 7px 7px;
   }
 }
 
+.background-wrapper {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  z-index: -4;
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(to top right, transparent, #e5f3ff);
 
-
-.input {
-  width: 300px;
-  margin-right: 10px;
+  img {
+    position: absolute;
+    width: 400px;
+    height: auto;
+    bottom: 30px;
+    right: 5vw;
+    transform: rotate(-25deg);
+    z-index: -3;
+  }
 }
+
+.background-pink-shade {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  overflow: hidden;
+  z-index: -2;
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(to top right, #f3e7f1 20%, transparent, transparent, transparent);
+}
+
+.background-div-one,.background-div-one-behind,.background-div-two {
+  transform: rotate(25deg);
+  background-color: grey;
+  height: 140vh;
+  width:40vw;
+  z-index: -1;
+  position: absolute;
+}
+
+.background-div-one {
+  left: -40vh;
+  top: -30vh;
+}
+
+.background-div-one-behind {
+  left: -25vh;
+  top: -30vh;
+  opacity: 0.4;
+}
+
+.background-div-two {
+  right: -50vh;
+  bottom: -60vh;
+}
+
+.img_wrapper {
+  display: flex;
+  justify-content: center;
+  height: 350px;
+  width: 100%;
+}
+
+.pokedex_img {
+  margin-left: -200%;
+  height: 350px;
+  width: auto;
+}
+
+.pokedex_img.display {
+  animation: slidein forwards 0.5s;
+}
+
+.pokedex-entry {
+  margin-top: 10px;
+  padding: 10px 25px 10px 15px;
+  color: white;
+
+  div {
+    position: absolute;
+    left: -10%;
+    height: 60px;
+    margin: -5px;
+    width: 58%;
+    transform: skew(-25deg);
+    opacity: 0.8;
+    filter: contrast(190%) brightness(75%);
+    z-index: -1;
+  }
+  
+}
+
+
+@keyframes slidein {
+  0% { transform: scale(1); margin-left: -100%;}
+  70% { transform: scale(0.95,1.05) rotate(10deg); margin-left: 10%; }
+  80% { transform: scale(1.05,0.95);}
+  90% { transform: scale(0.95,1.05) rotate(0deg); }
+  100% { transform: scale(1); margin-left: 0; }
+}
+
+// @keyframes slidein {
+//   0% { margin-left: -100%;}
+//   100% { margin-left: 0; }
+// }
 
 .name {
   text-transform: capitalize;
@@ -48,6 +175,7 @@ form {
 .evolution-chain {
   display: flex;
   justify-content: space-evenly;
+  height: 90px;
   // border: red 1px solid;
   div {
     display: flex;
@@ -66,25 +194,36 @@ form {
 }
 
 @keyframes bopping {
-  0% {
-    top: 0;
-  }
-  50% {
-    top: -5px;
-  }
-  100% {
-    top: 0;
-  }
+  0% { top: 0; }
+  50% { top: -5px; }
+  100% { top: 0; }
 }
 
-
-img.bigger{
-  height: 500px;
-  width: auto;
-}
 
 .stats {
   text-transform: uppercase;
+}
+
+.pokemon-header-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+  // border: green 1px solid;
+  p {
+    margin: 0 5px;
+  }
+
+}
+
+
+.selected-pokemon {
+  position: absolute;
+  left: 0px;
+  // border: green 1px solid;
+  height: 36px;
+  line-height: 36px;
+  font-size: 36px;
+  color:white;
 }
 
 .type {
@@ -98,79 +237,79 @@ img.bigger{
 }
 
 .grass {
-  background-color: green;
+  background-color: #61b752;
 }
 
 .electric {
   color: black;
-  background-color: rgb(252, 219, 36);
+  background-color: #efd341;
 }
 
 .fire {
-  background-color: rgb(247, 69, 15);
+  background-color: #fa9c56;
 }
 
 .poison {
-  background-color: rgb(122, 16, 155);
+  background-color: #ab67ca;
 }
 
 .ghost {
-  background-color: rgb(31, 9, 82);
+  background-color: #556aad;
 }
 
 .dark {
-  background-color: rgb(20, 19, 22);
+  background-color: #5a5667;
 }
 
 .psychic {
-  background-color: rgb(190, 24, 177);
+  background-color: #f77077;
 }
 
 .fairy {
-  background-color: rgb(250, 183, 239);
+  background-color: #ec8ddf;
 }
 
 .steel {
-  background-color: rgb(128, 128, 128);
+  background-color: #5c90a6;
 }
 
 .water {
-  background-color: rgb(48, 161, 236);
+  background-color: #5190d7;
 }
 
 .ice {
-  color: rgb(6, 46, 99); 
-  background-color: rgb(150, 209, 248);
+  // color: rgb(6, 46, 99); 
+  background-color: #6bd5bf;
 }
 
 .flying {
-  background-color: rgb(180, 130, 107);
+  background-color: #92a8e1;
 }
 
 .ground {
-  background-color: rgb(94, 45, 43);
+  background-color: #d67845;
 }
 
 .fighting {
-  background-color: rgb(94, 78, 57);
+  background-color: #cb4165;
 }
 
 .rock {
-  background-color: rgb(133, 125, 89);
+  background-color: #c6b88b;
 }
 
 
 .dragon {
-  background-color: rgb(45, 100, 91);
+  background-color: #0a6dc2;
 }
 
 .bug {
-  color: green;
-  background-color: rgb(136, 245, 136);
+  color: black;
+  background-color: #94c432;
 }
 
 .normal {
-  color: brown;
-  background-color: rgb(253, 222, 182);
+  color: white;
+  background-color: #a0a29f;
 }
 
