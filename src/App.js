@@ -1,13 +1,27 @@
 import React from 'react'
 import axios from 'axios'
 
-const speciesURL = 'https://pokeapi.co/api/v2/pokemon-species/'
-const spritePath = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/'
-const versionPath = 'generation-iii/emerald/'
+import { setCaughtIds, getCaughtIds } from './lib/storage'
+import StatBars from './components/StatBars'
 
-const types = ['all', 'bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting',
-  'fire', 'flying', 'ghost', 'grass', 'ground', 'ice', 
-  'normal', 'poison', 'psychic', 'rock', 'steel', 'water']
+const speciesURL = 'https://pokeapi.co/api/v2/pokemon-species/'
+
+const types = ['all', 'bug', 'dark', 'dragon', 'electric',
+  'fairy', 'fighting', 'fire', 'flying', 'ghost',
+  'grass', 'ground', 'ice','normal', 'poison',
+  'psychic', 'rock', 'steel', 'water']
+
+function formatName(name) {
+  if (name[name.length - 2] === '-') {
+    if (name.includes('-f')) {
+      return name.replace('-f', '\u2640')
+    } else {
+      return name.replace('-m', '\u2642')
+    }
+  } else {
+    return name.replace('-', '. ')
+  }
+}
 
 function App() {
   const [pokemons, setPokemons] = React.useState(null)
@@ -15,9 +29,10 @@ function App() {
   const [currentSpecies, setCurrentSpecies] = React.useState(null)
   const [currentEvolutionChain, setCurrentEvolutionChain] = React.useState(null)
   const [selectedType, setSelectedType] = React.useState('all')
+  const [sortedPokemons, setSortedPokemons] = React.useState(null)
   const [searchTerm, setSearchTerm] = React.useState('')
-
-  const [pokedexImageDisplay,setPokedexImageDisplay] = React.useState(' display')
+  const [pokedexImageDisplay, setPokedexImageDisplay] = React.useState(' display')
+  const [caughtPokemons, setCaughtPokemons] = React.useState(getCaughtIds())
 
   React.useEffect(() => {
     const getData = async () => {
@@ -31,6 +46,7 @@ function App() {
         pokemonsArray.sort((a, b) => a.id - b.id)
         setPokemons(pokemonsArray)
         setCurrentPokemon(pokemonsArray[0])
+        setSortedPokemons(pokemonsArray)
       } catch (err) {
         console.log(err)
       }
@@ -61,15 +77,13 @@ function App() {
     pokedexEntry = currentSpecies.flavor_text_entries[i].flavor_text
   }
 
-
   let timer
-  const handleImageLoad = () => {
+  const handlePokedexImgDisplay = () => {
     setPokedexImageDisplay('')
     clearTimeout(timer)
     timer = setTimeout(() => {
       setPokedexImageDisplay(' display')
-    }, 200)
-    
+    }, 400)
   }
 
   let evolutionChain = []
@@ -96,10 +110,10 @@ function App() {
     const descending = e.target.value.split('-')[1] === 'descending'
     const pokemonsCopy = JSON.parse(JSON.stringify(pokemons))
     pokemonsCopy.sort((a, b) => (a[key] - b[key]) * (descending ? -1 : 1))
-    setPokemons(pokemonsCopy)
+    setSortedPokemons(pokemonsCopy)
   }
 
-  const filteredPokemons = pokemons ? pokemons.filter(pokemon => {
+  const filteredPokemons = sortedPokemons ? sortedPokemons.filter(pokemon => {
     if (!pokemon.name.includes(searchTerm)) {
       return false
     }
@@ -110,10 +124,22 @@ function App() {
     }
     return pokemon.types[0].type.name === selectedType || selectedType === 'all'
   }) : null
+
+  const catchPokemon = () => {
+    let newCaughtPokemons
+    if (!caughtPokemons.includes(currentPokemon.id)) {
+      newCaughtPokemons = [...caughtPokemons, currentPokemon.id]
+    } else {
+      newCaughtPokemons = caughtPokemons.filter(id => {
+        return id !== currentPokemon.id
+      })
+    }
+    setCaughtPokemons(newCaughtPokemons)
+    setCaughtIds(newCaughtPokemons)
+  }
   
   return (
     <>
-
       <div className="background-wrapper">
         <div className="background-pink-shade"></div> 
         {currentPokemon &&
@@ -142,9 +168,9 @@ function App() {
             <div className="column is-one-half">
               {currentPokemon && currentSpecies && currentEvolutionChain ?
                 <>
-                  
+                
                   <div className="pokemon-header-wrapper">
-                    <p className="selected-pokemon name">{currentPokemon.name}</p>    
+                    <p className="selected-pokemon name">{formatName(currentPokemon.name)}</p>    
 
                     <p className={`type ${currentPokemon.types[0].type.name}`}>
                       {currentPokemon.types[0].type.name}
@@ -156,9 +182,27 @@ function App() {
                     }
                   </div>
                   
-                  <div className="img_wrapper">
-                    {/* <img className="bigger" src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_default}/> */}
-                    <img className={'pokedex_img' + pokedexImageDisplay} src={currentPokemon.sprites.other['official-artwork'].front_default}/>
+                  <div className="img-wrapper">
+                    <div className={'shiny ' + pokedexImageDisplay +
+                      (caughtPokemons.includes(currentPokemon.id) ? '' : ' transparent')}>
+                      <img
+                        className={caughtPokemons.includes(currentPokemon.id) ? '' : ' transparent'}
+                        src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}/>
+                    </div>
+                    {/* {caughtPokemons.includes(currentPokemon.id) &&
+                      <div className={'shiny' + pokedexImageDisplay}>
+                        <img src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}/>
+                      </div>
+                    } */}
+                    <img className={'pokedex-img' + pokedexImageDisplay} src={currentPokemon.sprites.other['official-artwork'].front_default}/>
+                    <div className={`pokeball-select
+                      ${caughtPokemons.includes(currentPokemon.id) ? ' activated' : ''}` +
+                      pokedexImageDisplay}>
+                      <img 
+                        src='./assets/pokeball_blue_heavy.svg'
+                        onClick={catchPokemon}
+                      />
+                    </div>  
                   </div>
 
                   <div className="evolution-chain">
@@ -168,11 +212,12 @@ function App() {
                         className={stage[1] === currentPokemon.id ? 'selected' : ''}
                         onClick={() => {
                           setCurrentPokemon(pokemons[stage[1] - 1])
-                          handleImageLoad()
+                          handlePokedexImgDisplay()
                         }}
                       >
-                        <img src={`${spritePath}${versionPath}${stage[1]}.png`}/>
-                        <p className="name">{stage[0]}</p>
+                        <img className="img-hover-effect clickable"
+                          src={pokemons[stage[1] - 1].sprites.versions['generation-iii']['emerald'].front_default}/>
+                        <p className="name">{formatName(stage[0])}</p>
                       </div>
                     ))}
                   </div>  
@@ -180,79 +225,66 @@ function App() {
                   <div className="pokedex-entry">
                     <div className={`${currentPokemon.types[0].type.name}`}></div>
                     <p>{pokedexEntry}</p>
-                  </div>        
-                  {currentPokemon.stats.map(st => (
-                    <div key={st.stat.name}>
-                      <p className="stats">{st.stat.name}</p>
-                      <p>{st.base_stat}</p>
-                    </div>
-                  ))
-                  
-                  }
+                  </div>
+                  <StatBars currentPokemon={currentPokemon}/>
                 </> 
                 :
                 <img className="loading" src='./assets/pokeball_small.svg'/>
               }
             </div>
+
             <div className="column is-one-half is-offset-one-half">
               <form>
                 <input
                   className="input"
                   type="text"
-                  placeholder="pokémon name"
+                  placeholder="Pokémon name"
                   name="name"
                   onInput={(e) => setSearchTerm(e.target.value)}
                 />
                 <select onChange={handleSort}>
-                  <option disabled>Sort By</option>
-                  <option value="id-ascending">ID (ascending)</option>
-                  <option value="id-descending">ID (descending)</option>
-                  <option value="height-ascending">Height (Short -{'>'} Long)</option>
-                  <option value="height-descending">Height (Long -{'>'} Short)</option>
-                  <option value="weight-ascending">Weight (Light -{'>'} Heavy)</option>
-                  <option value="weight-descending">Weight (Heavy {'→'} Light)</option>
+                  <option disabled>Order By</option>
+                  <option value="id-ascending">ID (#001 → #151)</option>
+                  <option value="id-descending">ID (#151 → #001)</option>
+                  <option value="height-ascending">Height (Short → Tall)</option>
+                  <option value="height-descending">Height (Tall → Short)</option>
+                  <option value="weight-ascending">Weight (Light → Heavy)</option>
+                  <option value="weight-descending">Weight (Heavy → Light)</option>
                 </select>
                 <select onChange={e => setSelectedType(e.target.value)}>
+                  <option disabled>Filter By Type</option>
                   {types.map(type => (
                     <option key={type} value={type}>{type.toUpperCase()}</option>
                   ))}
                 </select>
-                {selectedType !== 'all' &&
-                  <div className={`type_indicator ${selectedType}`}>
+                <div className={`type_indicator ${selectedType}`}>
+                  {selectedType !== 'all' &&
                     <img src={`./assets/${selectedType}.svg`}/>
-                  </div>
-                }
+                  }
+                </div>
               </form>
-              <div className="columns is-multiline">
+              <div className="columns is-multiline is-mobile">
                 {filteredPokemons ?
                   filteredPokemons.map(pokemon => (
                     <div
                       key={pokemon.species.name}
                       className="column is-one-quarter"
-                      onClick={() => {
-                        setCurrentPokemon(pokemon)
-                        handleImageLoad()
-                      }}
                     >
                       <img
-                        className="shadow"
+                        className={`${caughtPokemons.includes(pokemon.id) ? '' : 'shadow'} clickable img-hover-effect`}
                         src={pokemon.sprites.versions['generation-iii']['emerald'].front_default}
+                        onClick={() => {
+                          setCurrentPokemon(pokemon)
+                          handlePokedexImgDisplay()
+                        }} 
                       />
-                      {pokemon.species.name[pokemon.species.name.length - 2] === '-' ?
-                        pokemon.species.name.includes('-f') ?
-                          <p className="name">{pokemon.species.name.replace('-f','')}&#9792;</p>
-                          :
-                          <p className="name">{pokemon.species.name.replace('-m','')}&#9794;</p>
-                        :
-                        <p className="name">{pokemon.species.name.replace('-','. ')}</p>
-                      }
+                      <p className="name">{formatName(pokemon.species.name)}</p>
                     </div>
                   ))
                   :
-                  <p>
-                    ...loading
+                  <div className="load-wrapper">
                     <img className="loading" src='./assets/pokeball_small.svg'/>
-                  </p>
+                  </div>
                 }
               </div>
             </div>
