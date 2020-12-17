@@ -69,7 +69,7 @@ img.loading {
 .columns.is-multiline {
   margin-top: 0px;
   overflow-y: scroll;
-  height: 90vh;
+  height: 85vh;
 }
 
 // * STAT BARS
@@ -203,6 +203,14 @@ form {
   position: relative;
   animation: waving infinite 1s;
 }
+
+.shiny.display.invisible {
+  visibility: hidden;
+  img {
+    visibility: hidden;
+  }
+}
+
 
 @keyframes waving {
   0% {

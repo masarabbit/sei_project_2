@@ -184,16 +184,11 @@ function App() {
                   
                   <div className="img-wrapper">
                     <div className={'shiny ' + pokedexImageDisplay +
-                      (caughtPokemons.includes(currentPokemon.id) ? '' : ' transparent')}>
+                      (caughtPokemons.includes(currentPokemon.id) ? '' : ' invisible')}>
                       <img
-                        className={caughtPokemons.includes(currentPokemon.id) ? '' : ' transparent'}
-                        src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}/>
+                        src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}
+                      />
                     </div>
-                    {/* {caughtPokemons.includes(currentPokemon.id) &&
-                      <div className={'shiny' + pokedexImageDisplay}>
-                        <img src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}/>
-                      </div>
-                    } */}
                     <img className={'pokedex-img' + pokedexImageDisplay} src={currentPokemon.sprites.other['official-artwork'].front_default}/>
                     <div className={`pokeball-select
                       ${caughtPokemons.includes(currentPokemon.id) ? ' activated' : ''}` +
