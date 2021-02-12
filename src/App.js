@@ -111,6 +111,8 @@ function App() {
     const pokemonsCopy = JSON.parse(JSON.stringify(pokemons))
     pokemonsCopy.sort((a, b) => (a[key] - b[key]) * (descending ? -1 : 1))
     setSortedPokemons(pokemonsCopy)
+    // pokemons.sort((a, b) => (a[key] - b[key]) * (descending ? -1 : 1))
+    // setSortedPokemons(pokemons)
   }
 
   const filteredPokemons = sortedPokemons ? sortedPokemons.filter(pokemon => {
@@ -171,15 +173,17 @@ function App() {
                 
                   <div className="pokemon-header-wrapper">
                     <p className="selected-pokemon name">{formatName(currentPokemon.name)}</p>    
-
-                    <p className={`type ${currentPokemon.types[0].type.name}`}>
-                      {currentPokemon.types[0].type.name}
-                    </p>
-                    {currentPokemon.types.length > 1 &&
-                      <p className={`type ${currentPokemon.types[1].type.name}`}>
-                        {currentPokemon.types[1].type.name}
+                    
+                    <div className="pokemon-type-label">
+                      <p className={`type ${currentPokemon.types[0].type.name}`}>
+                        {currentPokemon.types[0].type.name}
                       </p>
-                    }
+                      {currentPokemon.types.length > 1 &&
+                        <p className={`type ${currentPokemon.types[1].type.name}`}>
+                          {currentPokemon.types[1].type.name}
+                        </p>
+                      }
+                    </div>
                   </div>
                   
                   <div className="img-wrapper">
@@ -189,7 +193,11 @@ function App() {
                         src={currentPokemon.sprites.versions['generation-iii']['emerald'].front_shiny}
                       />
                     </div>
-                    <img className={'pokedex-img' + pokedexImageDisplay} src={currentPokemon.sprites.other['official-artwork'].front_default}/>
+                    
+                    <div className={'pokedex-img' + pokedexImageDisplay}>
+                      <img src={currentPokemon.sprites.other['official-artwork'].front_default}/>
+                    </div>  
+
                     <div className={`pokeball-select
                       ${caughtPokemons.includes(currentPokemon.id) ? ' activated' : ''}` +
                       pokedexImageDisplay}>
@@ -228,14 +236,14 @@ function App() {
               }
             </div>
 
-            <div className="column is-one-half is-offset-one-half">
+            <div className="column is-one-half custom-padding">
               <form>
                 <input
                   className="input"
                   type="text"
                   placeholder="Pokémon name"
                   name="name"
-                  onInput={(e) => setSearchTerm(e.target.value)}
+                  onInput={(e) => setSearchTerm((e.target.value.toLowerCase()))}
                 />
                 <select onChange={handleSort}>
                   <option disabled>Order By</option>
@@ -246,19 +254,19 @@ function App() {
                   <option value="weight-ascending">Weight (Light → Heavy)</option>
                   <option value="weight-descending">Weight (Heavy → Light)</option>
                 </select>
-                <select onChange={e => setSelectedType(e.target.value)}>
+                <select onChange={e => setSelectedType(e.target.value)} className="pokemon-type-select">
                   <option disabled>Filter By Type</option>
                   {types.map(type => (
-                    <option key={type} value={type}>{type.toUpperCase()}</option>
+                    <option key={type} value={type}>{type.toLowerCase()}</option>
                   ))}
                 </select>
-                <div className={`type_indicator ${selectedType}`}>
+                <div className={`type-indicator ${selectedType}`}>
                   {selectedType !== 'all' &&
                     <img src={`./assets/${selectedType}.svg`}/>
                   }
                 </div>
               </form>
-              <div className="columns is-multiline is-mobile">
+              <div className="columns is-multiline is-mobile index">
                 {filteredPokemons ?
                   filteredPokemons.map(pokemon => (
                     <div

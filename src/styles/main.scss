@@ -19,7 +19,18 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
 
+.index {
+  // border: red 1px solid;
+  align-content: flex-start;
+  width: 100%;
+  margin: 0;
+}
+
+.custom-padding {
+  // border: 1px solid yellow;
+  padding: 0;
 }
 
 .load-wrapper {
@@ -74,8 +85,9 @@ img.loading {
 
 // * STAT BARS
 
+
 div.columns.is-half {
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 div.column.is-half.columns {
@@ -123,20 +135,31 @@ progress.progress {
 form {
   display: flex;
   justify-content: space-evenly;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  // border: green 1px  solid;
 }
 
 .input {
-  width: 230px;
+  width: 200px;
+  // border: red solid 1px;
 }
 
-.type_indicator {
+.pokemon-type-select {
+  width: 70px;
+}
+
+.type-indicator {
   background-color: grey;
-  height: 40px;
-  width: 40px;
+  height: 37px;
+  width: 37px;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 3px; 
+  
   img {
     height: 26px;
     width: auto;
@@ -177,13 +200,17 @@ form {
 
 
 .img-wrapper {
+  position: relative;
   display: flex;
   justify-content: center;
-  height: 350px;
+  // height: 350px;
   width: 100%;
 }
 
 .shiny {
+  position: absolute;
+  left: 0;
+  top: 5px;
   background-color: rgba(255, 255, 255, 0.397) ;
   opacity:0;
   width: 90px;
@@ -196,7 +223,6 @@ form {
 
 .shiny.display {
   animation: fadein forwards 1s;
-  margin: 20px 20px 0px -80px; 
 }
 
 .shiny > img {
@@ -225,19 +251,19 @@ form {
 }
 
 .pokeball-select {
-  margin: 20px -80px 0px 30px; 
-  align-self: flex-start;
+  position: absolute;
+  right: 0;
+  top: 5px;
   width: 50px;
   height: 50px;
   border-radius: 50px;
-
   
   img {
-    opacity: 40%;
+    opacity: 0.4;
   }
 
   img:hover {
-    opacity: 100%;
+    opacity: 1;
     animation: rotating forwards .5s;
     cursor: pointer;
   }
@@ -246,6 +272,8 @@ form {
 
 .pokeball-select.display {
   animation: fadein forwards 1s, rotating forwards 1s;
+  border-radius: 50%;
+  overflow:hidden;
 }
 
 @keyframes fadein {
@@ -256,7 +284,7 @@ form {
 
 .pokeball-select.activated {
   img {
-    opacity: 100%;
+    opacity: 1;
     filter: hue-rotate(140deg) brightness(110%);
   }
 
@@ -270,32 +298,20 @@ form {
 .pokedex-img {
   margin-left: -250%;
   height: 350px;
-  width: auto;
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .pokedex-img.display {
   animation: slidein forwards .3s;
 }
-
-.pokedex-entry {
-  margin-top: 10px;
-  padding: 10px 25px 10px 15px;
-  color: white;
-
-  div {
-    position: absolute;
-    left: -10%;
-    height: 60px;
-    margin: -5px;
-    width: 58%;
-    transform: skew(-25deg);
-    opacity: 0.8;
-    filter: contrast(190%) brightness(75%);
-    z-index: -1;
-  }
-  
-}
-
 
 @keyframes slidein {
   0% { transform: scale(1); margin-left: -100%;}
@@ -320,6 +336,7 @@ form {
   height: 90px;
   div {
     display: flex;
+    align-items: center;
     flex-direction: column;
   }
 
@@ -341,9 +358,11 @@ form {
 }
 
 .pokemon-header-wrapper {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
-  overflow: hidden;
+  align-items: center;
+  height: 70px;
+  // overflow: hidden;
   p {
     margin: 0 5px;
   }
@@ -351,11 +370,22 @@ form {
 
 .selected-pokemon {
   position: absolute;
+  bottom: 0;
   left: 0px;
   height: 36px;
   line-height: 36px;
   font-size: 36px;
   color:white;
+}
+
+.pokemon-type-label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  margin: 0 0 0 auto;
+  justify-content: flex-end;
+  font-size: 13px;
 }
 
 .type {
@@ -454,19 +484,23 @@ form {
 
   .pokedex-entry {
     margin-top: 10px;
-    padding: 10px 25px 10px 15px;
+    padding: 10px 25px 10px 5px;
     color: white;
   
     div {
       position: absolute;
       left: -10%;
-      height: 60px;
+      height: 80px;
       margin: -5px;
       width: 105%;
       transform: skew(-25deg);
       opacity: 0.8;
       filter: contrast(190%) brightness(75%);
       z-index: -1;
+    }
+
+    p {
+      font-size: 13px;
     }
     
   }
@@ -475,7 +509,7 @@ form {
     transform: rotate(25deg);
     height: 140vh;
     width:60vw;
-    z-index: -1;
+    z-index: 100;
     position: absolute;
   }
   
@@ -495,6 +529,16 @@ form {
     right: -45vw;
     bottom: -60vh;
   }
+
+  // .stat-indicator {
+  //   border: red 1px solid;
+  // }
+  
+  // .section {
+  //   width: 100%;
+  //   padding: 0;
+  //   margin: 0;
+  // }
 } 
 
 
@@ -532,5 +576,15 @@ form {
     }
     
   }
+
+  div.columns.is-half {
+    margin-top: 20px;
+  }
+  
+  // .section {
+  //   width: 100%;
+  //   padding: 0;
+  //   margin: 0;
+  // }
 
 }  

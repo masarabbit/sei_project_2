@@ -2,7 +2,7 @@ import React from 'react'
 
 function StatBars({ currentPokemon: { stats, types } }) {
   return (
-    <div className="columns is-half is-mobile">
+    <div className="columns is-half is-mobile stat-indicator">
       <div className="column is-half columns is-mobile">
         <div className="column is-one-third">
           <div className="stat-wrapper stat-name">
