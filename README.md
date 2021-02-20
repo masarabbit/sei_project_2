@@ -64,15 +64,15 @@ Since we were working in pairs, we first started by sketching out a mockup. It w
 	  <img src="README_images/mock_up.png" width="500" alt="mock up" style="border-radius:8px" />
 </p>
 
-There were two ideas for the layout, but we settled on having the index of the Pokémon displayed on the right, and section on the left to show each Pokémon when they are selected. The colour on the page would change depending on the selected Pokémon's type. 
+There were two ideas for the layout, but we settled on having the index of the Pokémon displayed on the right, and section on the left to show each Pokémon when they are selected. The colours used in the page border would change depending on the selected Pokémon's type. 
 
 <br/>
 
 ### Requesting Data from the API
 
-First step was to get the data from the PokéAPI so that it could be manipulated. This was more difficult than originally anticipated, since the PokéAPI is vast, and has many sub-sections. To get all the data we needed, we had to make two requests - first to retrieve the url of 151 Pokémon, then a second request using these url to retrieve data for each Pokémon.
+First step was to get the data from the PokéAPI so that it could be manipulated. This was more difficult than originally anticipated, since the PokéAPI is vast, and has many subsections. To get all the data we needed, we had to make two requests - first to retrieve the URL of the 151 Pokémon, then a second request using these URLs to retrieve data for each Pokémon.
 
-Initial attempt (below) involved getting each Pokémon's url, then making request for each of them using 'forEach'. Requested information was then pushed into an array, so that it could be set to state (note that for testing purpose, request was only made for 5 Pokémons at this point).
+Initial attempt (below) involved getting each Pokémon's URL, then making request for each of them using `forEach`. Requested information was then pushed into an array, so that it could be set to state (note that for testing purpose, request was only made for 5 Pokémon at this point).
 
 ```
   React.useEffect(() => {
@@ -95,13 +95,13 @@ Initial attempt (below) involved getting each Pokémon's url, then making reques
   }, [])
   ```
 
-  This approach did not work, because 'pokemonArray' was being set to state before the request was complete, which meant a blank array was set to state (this can be seen in the screenshot of console logs below. Results were displayed when the array was clicked, but these results were only evaluated when it was clicked.)
+  This approach did not work, because 'pokemonArray' was being set to state before the request was complete, which meant a blank array was set to state. This can be seen in the screenshot of the console log below (results were displayed when the array was clicked, but these results were only evaluated when it was clicked).
 
   <p align="center">
-	  <img src="README_images/pokemonarray.png"  alt="pokemond array displayed on console log" style="border-radius:8px" />
+	  <img src="README_images/pokemonarray.png"  alt="pokemond array displayed on console log" />
   </p>
 
-  This was a major blocker, but eventually resolved by using 'Promise.all' to ensure that requests were only set to state after they were all completed.
+  This was a major blocker, but eventually resolved by using `Promise.all` to ensure that requests were only set to state after they were all completed.
 
   ```
    React.useEffect(() => {
@@ -122,10 +122,10 @@ Initial attempt (below) involved getting each Pokémon's url, then making reques
   }, [])
 ```
 
-Once the data was retrieved, it was relatively easy to map them onto the page. API had links to many sprite images, but sprites from Pokémon Emerald was picked since it had nice resolution and colours.
+Once the data was retrieved, it was relatively easy to map them onto the page. API had links to many kinds of sprite images, but sprites from Pokémon Emerald was picked since it had nice resolution and colours.
 
   <p align="center">
-	  <img src="README_images/index.png" width="500" alt="index" style="border-radius:8px" />
+	  <img src="README_images/index.png" width="500" alt="index" />
   </p>
 
 <br/>
@@ -141,7 +141,7 @@ There were several information to be displayed when individual Pokémon were sel
 *  Battle Stats (Hit Points, Speed etc)
 *  Shiny sprite (rare alternative colour of the Pokémon)
 
-This was tricky because these information were on different parts of the API, which were not availble in the data initially requested. So further API request was made once data for all Pokémon were available. By default, 'currentPokemon' was set as the first Pokémon in the data, which is Bulbasaur. 'currentPokemon' was set as the dependency array for 'useEffect' below:
+This was tricky because these information were on different parts of the API, which were not availble in the data initially requested. So further API request was made once data for all Pokémon were available. By default, 'currentPokemon' was set as the first Pokémon in the data, which is Bulbasaur. To do this, 'currentPokemon' was set as the dependency array for `useEffect` below:
 
 
 ```
@@ -163,15 +163,15 @@ This was tricky because these information were on different parts of the API, wh
   ```
 
   
-  For the evolution chain, name and id of each Pokémon belonging to the chain was necessary. Unfortunately, the PokéAPI did not have the information easily accessible, so it had to be edited in a roundabout way. There were no specific fields for Id in this part of the API, but since it was mentioned in the url field, it was accessed by splitting this string (a bit messy but it worked!) 
+  For the evolution chain, name and ID of each Pokémon belonging to the chain was necessary. Unfortunately, the PokéAPI did not have the information easily accessible, so it had to be edited in a roundabout way. There were no specific fields for ID in this part of the API, but since it was mentioned in the URL field, it was accessed by splitting this string (a bit messy but it worked!) 
 
   ```
   currentEvolutionChain.chain.species.url.split('/')[6]
   ```
 
-  Also, conditional flow was added to deal with the fact that not all Pokémons evolve twice (some only evolve once, some never, at least in the first version of the game). Pokémon's 'evolves_to' field's length was used to check if it evolved or not (if it did,the length would be more than 0). 'For loop' was used to accomodate Eevee - if you are familiar with the game, you may know that Eevee evolves to several different Pokémons, so the 'evolves_to' field had to be looped through to display all of them.
+  Also, conditional flow was added to deal with the fact that not all Pokémons evolve twice (some only evolve once, some never, at least in the first version of the game). Pokémon's 'evolves_to' field's length was used to check if it evolved or not (if it did, the length would be more than 0). `For loop` was used to accomodate Eevee - if you are familiar with the game, you may know that Eevee evolves to several different Pokémon, so the 'evolves_to' field had to be looped through to display all of them.
 
-  Also, since only 151 Pokémon from the first generation game was featured, the array was filtered in the end (some Pokémon had new evolution added in later versions of the game).
+  Also, since only 151 Pokémon from the first generation game were featured, the array was filtered in the end (some Pokémon had new evolution added in later versions of the game).
 
   ```
     let evolutionChain = []
@@ -202,9 +202,9 @@ This was tricky because these information were on different parts of the API, wh
 
 <br/>
 
-### Filters for the Pokémon index
+### Filters for the Pokémon Index
 
-An input field and two select options were put in to enable users to filter and sort Pokémon displayed in the index.
+One input field and two select options were put in to enable users to filter and sort Pokémon displayed in the index.
 
 The dropbox for type enabled users to choose one of 18 types, such as fire and water. Screenshots below shows the result of filtering fire and ground:
 
@@ -213,22 +213,22 @@ The dropbox for type enabled users to choose one of 18 types, such as fire and w
   </p>
 
   <p align="center">
-	  <img src="README_images/ground.png" width="500" alt="ground type Pokémon filtered" style="border-radius:8px" />
+	  <img src="README_images/ground.png" width="500" alt="ground type Pokémon filtered"  />
   </p>
 
-The select box for sorting gives user to sort them using ID numbers, height and weight, in either ascending or descending order. This could be used together with the other filters. Screenshot below shows ground type Pokémon sorted by height (short to tall):
+One of the select boxes provides option to sort by ID numbers, height or weight, in either ascending or descending order. Screenshot below shows ground type Pokémon sorted by height (short to tall):
 
   <p align="center">
-	  <img src="README_images/ground_sorted.png" width="500" width="500" alt="ground type Pokémon filtered, sorted by height" style="border-radius:8px" />
+	  <img src="README_images/ground_sorted.png" width="500" width="500" alt="ground type Pokémon filtered, sorted by height"  />
   </p>
 
-The text input field could be used to filter by name. Screenshot below shows ground type Pokémon with 'nido' in their name:
+The text input field could be used to filter by name. This could be used together with the select boxes. Screenshot below shows ground type Pokémon with 'nido' in their name:
 
   <p align="center">
-	  <img src="README_images/ground_sorted_more.png"  width="500" width="500" alt="ground type Pokémon filtered, sorted by height, name including 'nido'" style="border-radius:8px" />
+	  <img src="README_images/ground_sorted_more.png"  width="500" width="500" alt="ground type Pokémon filtered, sorted by height, name including 'nido'"  />
   </p>
   
-Pokémon were filtered using conditional flow - first it checked if the 'searchTerm' entered in the text input field was included in the name, then it moved onto check the type selected in the drop down. If Pokémon has two types, both their first type and second type are checked. Users could also choose 'all' types, in which case Pokémon of all types would be shown.
+Pokémon were filtered using conditional flow - first it checked if the 'searchTerm' entered in the text input field was included in the name, then it moved on to check the type selected in the drop down. If Pokémon has two types, both their first type and second type are checked. Users could also choose 'all' types, in which case Pokémon of all types would be shown.
 
 ```
   const filteredPokemons = sortedPokemons ? sortedPokemons.filter(pokemon => {
@@ -256,39 +256,41 @@ Before being filtered, the Pokémon array is sorted using function below.
   }
 ```
 
-A deep clone of the array was created using the JSON.parse(JSON.stringify(obj)) method - this is because the sort would mutate the pokemons array, affecting the order of the Pokémon displayed on other area of the page. For example, screenshot below on the left shows the result of Pikachu without this workaround. When the index was sorted in order of weight (heavy to light), instead of showing Pikachu and Raichu in the evolution chain, it shows Slowbro and Golduck, because the references were jumbled up. The Screenshot on the right shows the corrected version:
+A deep clone of the array was created using the JSON.parse(JSON.stringify(obj)) method - this is because the sort would mutate the pokemons array, affecting the order of the Pokémon displayed on other part of the web page. For example, screenshot below on the left shows the result of Pikachu without this workaround. When the index was sorted in order of weight (heavy to light), instead of showing Pikachu and Raichu in the evolution chain, it shows Slowbro and Golduck, because the data were jumbled up. The Screenshot on the right shows the corrected version:
 
   <p align="center">
-	  <img src="README_images/pikachu.png" width="600" alt="evolution jumbled up on the left, corrected on the right." style="border-radius:8px" />
+	  <img src="README_images/pikachu.png" width="600" alt="evolution jumbled up on the left, corrected on the right"  />
   </p>
 
-I subsequently found out that the deep cloning using JSON.parse and JSON.stringify is not considered to be the best since it can break certain objects (as explained [here](https://medium.com/@pmzubar/why-json-parse-json-stringify-is-a-bad-practice-to-clone-an-object-in-javascript-b28ac5e36521)), but it served the purpose for this project.
+I subsequently learned that deep cloning using JSON.parse and JSON.stringify is not considered to be best practice since it can break certain objects (as explained in  [this article](https://medium.com/@pmzubar/why-json-parse-json-stringify-is-a-bad-practice-to-clone-an-object-in-javascript-b28ac5e36521)), but it served the purpose for this project.
 
 <br/>
 
 ### Styling and Animation
 
-My main contribution for this project was styling animation using CSS. I took inspiration from the Pokémon Sword and Shield Version on Nintendo Switch, which has a an interface like below. I really liked the subtle shade of the background and the diagonal shapes, so I used these as an inspiration. Colours for the 18 types were also sampled from the game by using colour picker on Photoshop.
+My main contribution for this project was styling and animation using CSS. I took inspiration from the Pokémon Sword and Shield Version on Nintendo Switch, which has an interface like below. I really liked the subtle shade of the background and the slanted background, so I used these as an inspiration. Colours for the 18 types were also sampled from the game by using colour picker on Photoshop.
 
   <p align="center">
-	  <img src="README_images/switch_screenshot.jpg"  width="500" alt="screenshot from Pokémon Sword" style="border-radius:8px" />
+	  <img src="README_images/switch_screenshot.jpg"  width="500" alt="screenshot from Pokémon Sword" />
   </p>
 
 <br/>
 
 #### Background
 
-The background shade was put together by layering together a div, coloured using the linear-gradient. The diagonal shapes are also divs, rotated using `transform: rotate(25deg);`. These were conditionally rendered by referencing the selected Pokémon's type. The left hand side would refer to the first type, the left hand side the second type (if Pokémon only has one type, both background would be that type). For example, Vileplume shown below has the green from grass, and purple from poison type. 
+The background shade was put together by layering together a div, coloured using `linear-gradient`. The diagonal shapes are also divs, rotated using `transform: rotate(25deg)`. These were conditionally rendered by referencing the selected Pokémon's type. The left hand side would refer to the first type, the right hand side the second type (if Pokémon only has one type, both background would be that type). For example, Vileplume shown below has the green from grass, and purple from poison type. 
+
+ <p align="center">
+	  <img src="README_images/vileplume.png" width="500" alt="vileplume" />
+  </p>
 
 The colour from the first type is also used in 3 other shades in the background: 
 * The ligher colour is produced by adjusting the opacity. 
-* The background for the Pokédex entry is slightly darked by applying `filter: contrast(190%) brightness(75%);`
-* The stat bars has `filter: hue-rotate(30deg); ` applied to alter the hue slightly, to make it stand out from the background.
+* The background for the Pokédex entry is slightly darkened by applying `filter: contrast(190%) brightness(75%)`.
+* The stat bars has `filter: hue-rotate(30deg)` applied to alter the hue slightly, to make it stand out from the background.
 By applying the colour based on the base colour, it helped maintain consistency, and saved me from hard coding them.
 
- <p align="center">
-	  <img src="README_images/vileplume.png" width="500" alt="vileplume" style="border-radius:8px" />
-  </p>
+
 
 <br />
 
@@ -299,7 +301,7 @@ By applying the colour based on the base colour, it helped maintain consistency,
 	  <img src="README_images/bopping.gif" alt="hover effect" style="border-radius:8px" />
   </p>
 
-By default, the sprites are displayed in a dark bluish tone, almost like a silhouette but the detail just about visible. This is styled by applying`filter: sepia(100) hue-rotate(180deg) brightness(40%);`. By applying the sepia and hue-rotate(180deg), it becomes a bluish colour. The brightness is lowered to make it darker. When the image is hovered, the filter is changed back to default by applying `filter: sepia(0) hue-rotate(0deg) brightness(100%);`. A 'bopping' motion was also applying the following keyframe animation:
+By default, the sprites are displayed in a dark bluish tone, almost like a silhouette but the detail just about visible. This is styled by applying`filter: sepia(100) hue-rotate(180deg) brightness(40%)`. By applying the sepia and hue-rotate(180deg), it becomes a bluish colour. The brightness is lowered to make it darker. When the image is hovered, the filter is changed back to default by applying `filter: sepia(0) hue-rotate(0deg) brightness(100%)`. A 'bopping' motion was also added by applying keyframe animation:
 
 ```
 @keyframes bopping {
@@ -322,7 +324,7 @@ We also made a feature where the user could keep track of Pokémon they have cau
 }
 ```
 
-Clicking on the Pokéball icon would also trigger a function called 'catchPokemon', which would record the selected Pokémon's ID into a state variable. The ID was also recorded onto the browser's local storage, which meant that the 'caught' status would persist even when the page was refreshed. Once Pokémon is 'caught', the sprite in the index would also be displayed without the dark shade. Idea was that the index would become more and more colourful as the users collection grew. The 'caught' status can be cancelled by clicking on the Pokéball icon once more. You can see this in action in the screen capture below:
+Clicking on the Pokéball icon would also trigger a function called 'catchPokemon', which would record the selected Pokémon's ID into a state variable. The ID was also recorded onto the browser's local storage, which meant that the 'caught' status would persist even when the page was refreshed. Once Pokémon is 'caught', the sprite in the index would also be displayed without the dark shade. Idea was that the index would become more and more colourful as the user's collection grows. The 'caught' status can be cancelled by clicking on the Pokéball icon once more. You can see this in action in the screen capture below:
 
   <p align="center">
 	  <img src="README_images/catching_pokemon.gif" alt="index styling changes when Pokémon is 'caught'" style="border-radius:8px" />
@@ -334,7 +336,7 @@ Screen capture above also shows that when the Pokéball icon is clicked, the Shi
 
 #### Animation for Pokémon Entering the Page
   
-Each time a new Pokémon is selected, it comes in from left of the screen. This is triggered by adding 'display' class. This class is controlled using state, as shown in the snippet below:
+Each time a new Pokémon is selected, it comes in from left of the screen. This is triggered by adding the 'display' class. This class is controlled using state, as shown in the snippet below:
 
 ```
     <div className={'pokedex-img' + pokedexImageDisplay}>
@@ -342,7 +344,7 @@ Each time a new Pokémon is selected, it comes in from left of the screen. This 
     </div>  
 ```                    
 
-The 'display' class triggers the keyframe animation below. As well as changing the margin-left to move the image from left to right,` transform: scale` is applied to add a springy effect to the motion. The image is also tilted slightly using `transform: rotate`, which adds to this effect. 
+The 'display' class triggers the keyframe animation below. As well as changing the `margin-left` to move the image from left to right,` transform: scale` is applied to add a springy effect to the motion. The image is also tilted slightly using `transform: rotate`, which adds to this effect. 
 
 ```
 @keyframes slidein {
@@ -368,7 +370,7 @@ To trigger the animation each time a Pokémon is selected, the class is removed 
 
 ```
 
-The variable 'PokedexImageDisplay' is also tied to Pokéball icon. 
+The variable 'PokedexImageDisplay' is also tied to the Pokéball icon. 
 
 ```
    <div className={`pokeball-select
@@ -401,18 +403,18 @@ Two keyframes, 'fadein' and 'rotating' is applied to the Pokéball icon when the
 ## Final Thoughts
 
 ### Wins and Challenges
-It was the first time for me to make a web app in pairs, and I was still relatively new to working with React and API, so there was a lot to take in. On top of this we only had 48 hours so it was a major task. 
+This was my first time to make a website in pairs, and I was also still relatively new to working with React and API, so there was a lot to take in. On top of this we only had 48 hours so it was a major undertaking. 
 
-At the beginning it took longer to get started because we had to calibrate out ideas, but the process helped make the concept clearer, and in the end I was able to achieve much more than I could on my own. I felt that splitting the task worked well, because I was able to focus a lot on styling. 
+It took a while to get started because we had to first calibrate our ideas, but the process helped refine the concept, and in the end I was able to achieve much more than I could on my own. I felt that splitting the task worked well, because I was able to focus a lot on styling and animating. 
 
-We chose to use Bulma for some of the CSS. I found myself fighting against Bulma at times, but it was useful for getting things into shape quickly, such as the stats bar and form fields. Having said this, if I were to make something similar in the future, I would probably write my own CSS to have better control.
+We chose to use Bulma for some of the CSS. I found myself fighting against Bulma at times, but it was useful for getting certain things into shape quickly, particularly the stat bars and form fields. Having said this, if I were to make something similar in the future, I would probably write my own CSS to have better control.
 
 <br />
 
 ### Key Learnings
-The collaboration aspect of the project meant that I had to verbalise my thoughts, which I found difficult to begin with, but I am sure the skill would be invaluable in a real life coding environment. I also learned the benefit of splitting the app into different components, because it made it easier to work on separate are of the page easier. I only realised this towards the end of the project, but based on this experience, splitted the app into components earlier on for my later group projects.
+The collaboration aspect of the project meant that I had to verbalise my thoughts, which I found difficult to begin with, but I am sure the skill would be invaluable in a real life coding environment. I also learned the benefit of splitting the app into different components, because it made it easier to work on separate areas of the website. 
 
-The PokéAPI was so rich in data and fascinating to work with, but it was also quite tricky to work with. It made me think about how APIs could be structured, bearing in mind how the user might want to access the data. 
+The PokéAPI was so rich in data and fun to work with, but it was also quite tricky to get the data we wanted. It made me think about how APIs could be structured, bearing in mind how the user might want to access the data. 
 
 (Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.)
 
