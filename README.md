@@ -17,15 +17,14 @@
 	* [Key Learnings](./README.md#key-learnings)
 
 
-(Click [here](https://masa-pokedex.netlify.app/) to see project.)
-
+(Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.)
 
 <br/>
 
 ## Overview 
-This was the second project I did at General Assembly's Software Engineering Immersive Course - we had 48 hours to create a web app in pairs. We chose to make a Pokédex featuring the 151 first generation Pokémon, using [PokéAPI](https://pokeapi.co/).
+This was the second project I did at General Assembly's Software Engineering Immersive Course - we had 48 hours to create a web app in pairs. We chose to make a Pokédex featuring the 151 first generation Pokémon, using [PokéAPI](https://pokeapi.co/). Users can click on the Pokémon sprites to display details about them such as their evolution chain and battle stats.
 
-I had only just learnt React, and this was also the first time I had coded with someone else. In this ReadMe I have summarised my experience. I mainly worked on styling and animating the page, but I will also explain the logic behind the API requests and filters since I also contributed to these elements. Since we were taking the course remotely, we used Live Share on VS Code to pair code.
+I had only just learnt React, and this was also the first time I had coded a project with someone else. I mainly worked on styling and animating the page, but I will also explain the logic behind the API requests and filters since I also contributed to these elements. Since we were taking the course remotely, we used Live Share on VS Code to pair code.
 
 
 <br/>
@@ -47,7 +46,7 @@ I had only just learnt React, and this was also the first time I had coded with 
 * GitHub
 * Adobe Fonts
 * Google Chrome dev tools
-* VScode
+* VS Code
 * Eslint
 * Photoshop
 * Illustrator
@@ -415,7 +414,7 @@ The collaboration aspect of the project meant that I had to verbalise my thought
 
 The PokéAPI was so rich in data and fascinating to work with, but it was also quite tricky to work with. It made me think about how APIs could be structured, bearing in mind how the user might want to access the data. 
 
-(Click [here](https://masa-pokedex.netlify.app/) to see project)
+(Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.)
 
  <p align="center">
 	  <img src="README_images/eevee_page.png" alt="full page displaying Eevee" style="border-radius:8px" />
