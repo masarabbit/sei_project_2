@@ -412,7 +412,7 @@ We chose to use Bulma for some of the CSS. I found myself fighting against Bulma
 <br />
 
 ### Key Learnings
-The collaboration aspect of the project meant that I had to verbalise my thoughts, which I found difficult to begin with, but I am sure the skill would be invaluable in a real life coding environment. I also learned the benefit of splitting the app into different components, because it made it easier to work on separate areas of the website. 
+The collaboration aspect of the project meant that I had to verbalise my thoughts, which I found difficult to begin with, but I am sure the skill would be invaluable in a real life coding environment. I also learned the benefit of splitting the app into different components, because it made it easier to work on separate areas of the website simultaneously. 
 
 The PokéAPI was so rich in data and fun to work with, but it was also quite tricky to get the data we wanted. It made me think about how APIs could be structured, bearing in mind how the user might want to access the data. 
 
