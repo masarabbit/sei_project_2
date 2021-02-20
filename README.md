@@ -5,10 +5,10 @@
 * [Brief](./README.md#brief)
 * [Technologies Used](./README.md#technologies-used)
 * [Approach](./README.md#approach)
-	* [Mock Up](./README.md#mock-up)
+	* [Mockup](./README.md#mockup)
 	* [Requesting Data from the API](./README.md#requesting-data-from-the-api)
 	* [Displaying Details of Individual Pokémon](./README.md#displaying-details-of-individual-pokémon)
-	* [Styling and Animation](./README.md#styling-animation)
+	* [Styling and Animation](./README.md#styling-and-animation)
     * [Background](./README.md#background)
     * [Hover Effects](./README.md#hover-effects)
     * [Animation for Pokémon Entering the Page](./README.md#animation-for-pokémon-entering-the-page)
@@ -17,7 +17,7 @@
 	* [Key Learnings](./README.md#key-learnings)
 
 
-(Click [here](https://masa-pokedex.netlify.app/) to see project)
+(Click [here](https://masa-pokedex.netlify.app/) to see project.)
 
 
 <br/>
