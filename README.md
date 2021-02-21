@@ -74,7 +74,7 @@ First step was to get the data from the PokéAPI so that it could be manipulated
 
 Initial attempt (below) involved getting each Pokémon's URL, then making request for each of them using `forEach`. Requested information was then pushed into an array, so that it could be set to state (note that for testing purpose, request was only made for 5 Pokémon at this point).
 
-```
+```js
   React.useEffect(() => {
     const getData = async () => {
       try {
@@ -103,7 +103,7 @@ Initial attempt (below) involved getting each Pokémon's URL, then making reques
 
   This was a major blocker, but eventually resolved by using `Promise.all` to ensure that requests were only set to state after they were all completed.
 
-  ```
+  ```js
    React.useEffect(() => {
     const getData = async () => {
       try {
@@ -144,7 +144,7 @@ There were several information to be displayed when individual Pokémon were sel
 This was tricky because these information were on different parts of the API, which were not availble in the data initially requested. So further API request was made once data for all Pokémon were available. By default, 'currentPokemon' was set as the first Pokémon in the data, which is Bulbasaur. To do this, 'currentPokemon' was set as the dependency array for `useEffect` below:
 
 
-```
+```js
   const speciesURL = 'https://pokeapi.co/api/v2/pokemon-species/'
   
   React.useEffect(() => {
@@ -165,7 +165,7 @@ This was tricky because these information were on different parts of the API, wh
   
   For the evolution chain, name and ID of each Pokémon belonging to the chain was necessary. Unfortunately, the PokéAPI did not have the information easily accessible, so it had to be edited in a roundabout way. There were no specific fields for ID in this part of the API, but since it was mentioned in the URL field, it was accessed by splitting this string (a bit messy but it worked!) 
 
-  ```
+  ```js
   currentEvolutionChain.chain.species.url.split('/')[6]
   ```
 
@@ -173,7 +173,7 @@ This was tricky because these information were on different parts of the API, wh
 
   Also, since only 151 Pokémon from the first generation game were featured, the array was filtered in the end (some Pokémon had new evolution added in later versions of the game).
 
-  ```
+  ```js
     let evolutionChain = []
   if (currentEvolutionChain) {
     evolutionChain.push([currentEvolutionChain.chain.species.name,
@@ -192,7 +192,6 @@ This was tricky because these information were on different parts of the API, wh
       return stage[1] <= 151
     })
   }
-
   ```
   
   <p align="center">
@@ -230,7 +229,7 @@ The text input field could be used to filter by name. This could be used togethe
   
 Pokémon were filtered using conditional flow - first it checked if the 'searchTerm' entered in the text input field was included in the name, then it moved on to check the type selected in the drop down. If Pokémon has two types, both their first type and second type are checked. Users could also choose 'all' types, in which case Pokémon of all types would be shown.
 
-```
+```js
   const filteredPokemons = sortedPokemons ? sortedPokemons.filter(pokemon => {
     if (!pokemon.name.includes(searchTerm)) {
       return false
@@ -303,7 +302,7 @@ By applying the colour based on the base colour, it helped maintain consistency,
 
 By default, the sprites are displayed in a dark bluish tone, almost like a silhouette but the detail just about visible. This is styled by applying`filter: sepia(100) hue-rotate(180deg) brightness(40%)`. By applying the sepia and hue-rotate(180deg), it becomes a bluish colour. The brightness is lowered to make it darker. When the image is hovered, the filter is changed back to default by applying `filter: sepia(0) hue-rotate(0deg) brightness(100%)`. A 'bopping' motion was also added by applying keyframe animation:
 
-```
+```css
 @keyframes bopping {
   0% { top: 0; }
   50% { top: -5px; }
@@ -317,7 +316,7 @@ By default, the sprites are displayed in a dark bluish tone, almost like a silho
 
 We also made a feature where the user could keep track of Pokémon they have caught by clicking on the Pokéball icon. On hover, the icon's opacity would change, and it would spin once. Keyframe animation below was used, but set to `forwards` so that it only animated once per hover. When clicked, the Pokéball icon would change to pink, again by using `hue-rotate`. 
 
-```
+```css
 @keyframes rotating {
   0% { transform: rotate(0); }
   100% { transform: rotate(360deg); } 
@@ -338,7 +337,7 @@ Screen capture above also shows that when the Pokéball icon is clicked, the Shi
   
 Each time a new Pokémon is selected, it comes in from left of the screen. This is triggered by adding the 'display' class. This class is controlled using state, as shown in the snippet below:
 
-```
+```js
     <div className={'pokedex-img' + pokedexImageDisplay}>
       <img src={currentPokemon.sprites.other['official-artwork'].front_default}/>
     </div>  
@@ -346,7 +345,7 @@ Each time a new Pokémon is selected, it comes in from left of the screen. This 
 
 The 'display' class triggers the keyframe animation below. As well as changing the `margin-left` to move the image from left to right,` transform: scale` is applied to add a springy effect to the motion. The image is also tilted slightly using `transform: rotate`, which adds to this effect. 
 
-```
+```css
 @keyframes slidein {
   0% { transform: scale(1); margin-left: -100%;}
   70% { transform: scale(0.95,1.05) rotate(10deg); margin-left: 10%; }
@@ -358,7 +357,7 @@ The 'display' class triggers the keyframe animation below. As well as changing t
 
 To trigger the animation each time a Pokémon is selected, the class is removed first using `setPokedexImageDisplay('')` (the class is conditionally attached like this: `className={'pokedex-img' + pokedexImageDisplay}`) Then, reset 400 milliseconds later using `setTimeout`. This is handled in the function below:
 
-```
+```js
   let timer
   const handlePokedexImgDisplay = () => {
     setPokedexImageDisplay('')
@@ -372,7 +371,7 @@ To trigger the animation each time a Pokémon is selected, the class is removed 
 
 The variable 'PokedexImageDisplay' is also tied to the Pokéball icon. 
 
-```
+```js
    <div className={`pokeball-select
     ${caughtPokemons.includes(currentPokemon.id) ? ' activated' : ''}` + 
     pokedexImageDisplay}>
@@ -385,7 +384,7 @@ The variable 'PokedexImageDisplay' is also tied to the Pokéball icon.
 
 Two keyframes, 'fadein' and 'rotating' is applied to the Pokéball icon when the 'display' class is added. The 'fadein' changes the opacity 0.5 seconds into the animation, to ensure that the Pokéball icon appears after the Pokémon is displayed on the page.
 
-```
+```css
 .pokeball-select.display {
   animation: fadein forwards 1s, rotating forwards 1s;
   border-radius: 50%;
