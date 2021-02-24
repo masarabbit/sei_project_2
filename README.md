@@ -12,12 +12,15 @@
     * [Background](./README.md#background)
     * [Hover Effects](./README.md#hover-effects)
     * [Animation for Pokémon Entering the Page](./README.md#animation-for-pokémon-entering-the-page)
+* [Notable Bugs](./README.md#notable-bugs)  
 * [Final Thoughts](./README.md#final-thoughts)
 	* [Wins and Challenges](./README.md#wins-and-challenges)
 	* [Key Learnings](./README.md#key-learnings)
 
+<br/>
+<br/>
 
-(Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.)
+Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.
 
 <br/>
 
@@ -245,7 +248,7 @@ Pokémon were filtered using conditional flow - first it checked if the 'searchT
 
 Before being filtered, the Pokémon array is sorted using function below. 
 
-```
+```js
   const handleSort = e => {
     const key = e.target.value.split('-')[0]
     const descending = e.target.value.split('-')[1] === 'descending'
@@ -355,21 +358,9 @@ The 'display' class triggers the keyframe animation below. As well as changing t
 }
 ```
 
-To trigger the animation each time a Pokémon is selected, the class is removed first using `setPokedexImageDisplay('')` (the class is conditionally attached like this: `className={'pokedex-img' + pokedexImageDisplay}`) Then, reset 400 milliseconds later using `setTimeout`. This is handled in the function below:
+To trigger the animation each time a Pokémon is selected, the class is removed first using `setPokedexImageDisplay('')` (the class is conditionally attached like this: `className={'pokedex-img' + pokedexImageDisplay}`). Then, class is set again with `setPokedexImageDisplay(' display')`.
 
-```js
-  let timer
-  const handlePokedexImgDisplay = () => {
-    setPokedexImageDisplay('')
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      setPokedexImageDisplay(' display')
-    }, 400)
-  }
-
-```
-
-The variable 'PokedexImageDisplay' is also tied to the Pokéball icon. 
+The variable 'pokedexImageDisplay' is also tied to the Pokéball icon. 
 
 ```js
    <div className={`pokeball-select
@@ -399,6 +390,72 @@ Two keyframes, 'fadein' and 'rotating' is applied to the Pokéball icon when the
 ```
 <br />
 
+## Notable Bugs
+
+As mentioned earlier in [Filters for the Pokémon Index](./README.md#filters-for-the-pokémon-index), some of our functions accidentally mutated the data, which caused unexpected results. The solution was to create a separate copy of the data to avoid mutating the original.
+
+Another notable bug was that when new Pokémon were selected to be displayed, the display animation would trigger without waiting for the image to load fully. Screencapture below shows Pikachu re-entering the page when Sandshrew is selected:
+
+  <p align="center">
+	  <img src="README_images/pika_load.gif" alt="Pokémon display animation playing before new image is loaded." />
+  </p>
+
+As explained earlier, the display animation is controlled by adding and removing 'display' class on the element. The issue was, the class was being reattached using `setTimeout` using function below. This meant the animation would play 400 millisecond after the 
+Pokémon is selected, which may not be long enough for the new image to load.
+
+```js
+  let timer
+  const handlePokedexImgDisplay = () => {
+    setPokedexImageDisplay('')
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      setPokedexImageDisplay(' display')
+    }, 400)
+  }
+```
+<br />
+
+The solution to this was to remove the function from the sprites' `onClick` event, and adding it to Pokémon image's `onLoad` event instead. This way, it would only fire when the new image is loaded:
+
+```js
+  <img src={currentPokemon.sprites.other['official-artwork'].front_default}
+    onLoad={handlePokedexImgDisplay}
+  />
+```
+
+<br />
+
+Also, `setPokedexImageDisplay('')` was removed from 'handlePokedexImgDisplay' and moved to the sprites' `onClick` event instead. Conditional flow was added to ensure that it would only fire when a Pokémon different to the one already displayed is selected. This was necessary because without the conditional flow, when Pokémon already on display is re-selected, the 'display' class will be removed but will no be reattached. This is because the Pokémon image's `onLoad` event will only trigger if a new image is loaded.
+
+```js
+  <img
+    onClick={() => {
+      setCurrentPokemon(pokemon)
+      if (pokemon !== currentPokemon) setPokedexImageDisplay('')
+    }} 
+  />
+```                      
+
+<br />
+
+Apart from this, we also encountered issues with some of the Pokémon's names. This was not exactly a bug, but an issue arising from how the names were formatted in the API. In the Pokémon game, there are two types of Nidoran - Nidoran &#9794; and Nidoran &#9792;. These appeared as 'nidoran-m' and 'nidoran-f' in the API, so the names had to be refactored to be displayed correctly. Mr. Mime also had a similar issue, since it was spelt mr-mime in the API (I guess the names had to be formatted in such ways to be stored in the database). As a workaround, we had a function to reformat these names:
+
+``` js
+function formatName(name) {
+  if (name[name.length - 2] === '-') {
+    if (name.includes('-f')) {
+      return name.replace('-f', '\u2640')
+    } else {
+      return name.replace('-m', '\u2642')
+    }
+  } else {
+    return name.replace('-', '. ')
+  }
+}
+```
+
+<br />
+
 ## Final Thoughts
 
 ### Wins and Challenges
@@ -415,7 +472,7 @@ The collaboration aspect of the project meant that I had to verbalise my thought
 
 The PokéAPI was so rich in data and fun to work with, but it was also quite tricky to get the data we wanted. It made me think about how APIs could be structured, bearing in mind how the user might want to access the data. 
 
-(Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.)
+Click <a href="https://masa-pokedex.netlify.app/" target="_blank">here</a> to see project.
 
  <p align="center">
 	  <img src="README_images/eevee_page.png" alt="full page displaying Eevee" style="border-radius:8px" />

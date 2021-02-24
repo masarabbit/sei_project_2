@@ -34,6 +34,7 @@ function App() {
   const [pokedexImageDisplay, setPokedexImageDisplay] = React.useState(' display')
   const [caughtPokemons, setCaughtPokemons] = React.useState(getCaughtIds())
 
+
   React.useEffect(() => {
     const getData = async () => {
       try {
@@ -68,6 +69,8 @@ function App() {
     getData()
   }, [currentPokemon])
 
+
+
   let pokedexEntry
   if (currentSpecies) {
     let i = 0
@@ -79,12 +82,14 @@ function App() {
 
   let timer
   const handlePokedexImgDisplay = () => {
-    setPokedexImageDisplay('')
+    // setPokedexImageDisplay('')
     clearTimeout(timer)
     timer = setTimeout(() => {
       setPokedexImageDisplay(' display')
     }, 400)
   }
+
+
 
   let evolutionChain = []
   if (currentEvolutionChain) {
@@ -195,7 +200,9 @@ function App() {
                     </div>
                     
                     <div className={'pokedex-img' + pokedexImageDisplay}>
-                      <img src={currentPokemon.sprites.other['official-artwork'].front_default}/>
+                      <img src={currentPokemon.sprites.other['official-artwork'].front_default}
+                        onLoad={handlePokedexImgDisplay}
+                      />
                     </div>  
 
                     <div className={`pokeball-select
@@ -215,7 +222,7 @@ function App() {
                         className={stage[1] === currentPokemon.id ? 'selected' : ''}
                         onClick={() => {
                           setCurrentPokemon(pokemons[stage[1] - 1])
-                          handlePokedexImgDisplay()
+                          if (pokemons[stage[1] - 1] !== currentPokemon) setPokedexImageDisplay('')
                         }}
                       >
                         <img className="img-hover-effect clickable"
@@ -278,7 +285,7 @@ function App() {
                         src={pokemon.sprites.versions['generation-iii']['emerald'].front_default}
                         onClick={() => {
                           setCurrentPokemon(pokemon)
-                          handlePokedexImgDisplay()
+                          if (pokemon !== currentPokemon) setPokedexImageDisplay('')
                         }} 
                       />
                       <p className="name">{formatName(pokemon.species.name)}</p>
