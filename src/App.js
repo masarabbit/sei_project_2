@@ -252,26 +252,30 @@ function App() {
                   name="name"
                   onInput={(e) => setSearchTerm((e.target.value.toLowerCase()))}
                 />
-                <select onChange={handleSort}>
-                  <option disabled>Order By</option>
-                  <option value="id-ascending">ID (#001 → #151)</option>
-                  <option value="id-descending">ID (#151 → #001)</option>
-                  <option value="height-ascending">Height (Short → Tall)</option>
-                  <option value="height-descending">Height (Tall → Short)</option>
-                  <option value="weight-ascending">Weight (Light → Heavy)</option>
-                  <option value="weight-descending">Weight (Heavy → Light)</option>
-                </select>
-                <select onChange={e => setSelectedType(e.target.value)} className="pokemon-type-select">
-                  <option disabled>Filter By Type</option>
-                  {types.map(type => (
-                    <option key={type} value={type}>{type.toLowerCase()}</option>
-                  ))}
-                </select>
-                <div className={`type-indicator ${selectedType}`}>
-                  {selectedType !== 'all' &&
-                    <img src={`./assets/${selectedType}.svg`}/>
-                  }
-                </div>
+
+                <div className="right-section">
+                  <select onChange={handleSort}>
+                    <option disabled>Order By</option>
+                    <option value="id-ascending">ID (#001 → #151)</option>
+                    <option value="id-descending">ID (#151 → #001)</option>
+                    <option value="height-ascending">Height (Short → Tall)</option>
+                    <option value="height-descending">Height (Tall → Short)</option>
+                    <option value="weight-ascending">Weight (Light → Heavy)</option>
+                    <option value="weight-descending">Weight (Heavy → Light)</option>
+                  </select>
+                  <select onChange={e => setSelectedType(e.target.value)} className="pokemon-type-select">
+                    <option disabled>Filter By Type</option>
+                    {types.map(type => (
+                      <option key={type} value={type}>{type.toLowerCase()}</option>
+                    ))}
+                  </select>
+                  <div className={`type-indicator ${selectedType}`}>
+                    {selectedType !== 'all' &&
+                      <img src={`./assets/${selectedType}.svg`}/>
+                    }
+                  </div>
+                </div>    
+
               </form>
               <div className="columns is-multiline is-mobile index">
                 {filteredPokemons ?

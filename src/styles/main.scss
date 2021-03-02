@@ -130,41 +130,8 @@ progress.progress {
   filter: hue-rotate(30deg); 
 }
 
-//* FORM
 
-form {
-  display: flex;
-  justify-content: space-evenly;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  // border: green 1px  solid;
-}
 
-.input {
-  width: 200px;
-  // border: red solid 1px;
-}
-
-.pokemon-type-select {
-  width: 70px;
-}
-
-.type-indicator {
-  background-color: grey;
-  height: 37px;
-  width: 37px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 3px; 
-  
-  img {
-    height: 26px;
-    width: auto;
-  }
-}
 
 .background-wrapper {
   position: fixed;
@@ -539,6 +506,51 @@ form {
   //   padding: 0;
   //   margin: 0;
   // }
+
+
+  //* FORM
+
+form {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  flex-direction: column;
+}
+
+.input {
+  width: 100%;
+}
+
+.type-indicator {
+  // background-color: transparent;
+  height: 37px;
+  width: 37px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3px; 
+  
+  img {
+    height: 26px;
+    width: auto;
+  }
+}
+
+
+.right-section {
+  // border: yellow 1px solid;
+  display: flex;
+  margin: 10px 0 0 0;
+
+  select {
+    margin: 0 10px 0 0;
+  }
+}
+
+
 } 
 
 
@@ -587,4 +599,30 @@ form {
   //   margin: 0;
   // }
 
+  form {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .right-section {
+    display: flex;
+    margin: 0 0 0 0;
+    justify-content: space-evenly;
+    width: 100%;
+  
+    select {
+      margin: 0 0 0 0;
+    }
+  }
+  
+  .input {
+    width: 100%;
+    min-width: 150px;
+  }
+  
+
+
+  .pokemon-type-select {
+    width: 70px;
+  }
 }  
