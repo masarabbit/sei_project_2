@@ -34,21 +34,28 @@ function App() {
   const [pokedexImageDisplay, setPokedexImageDisplay] = React.useState(' display')
   const [caughtPokemons, setCaughtPokemons] = React.useState(getCaughtIds())
 
+  
+  // const requestsArray = results.map((pokemon,i) => {
+  //   return i === 64 ?
+  //     axios.get('https://pokeapi.co/api/v2/pokemon/64/')//* some issue with the 65th pokemon, so this line put in as a temporal fix.
+  //     :
+  //     axios.get(pokemon.url)
+  // })
 
   React.useEffect(() => {
     const getData = async () => {
       try {
         const { data: { results } } = await axios.get('https://pokeapi.co/api/v2/pokemon?limit=151')
-        const requestsArray = results.map(pokemon => {
-          return axios.get(pokemon.url)
-        })
-
-        // const requestsArray = results.map((pokemon,i) => {
-        //   return i === 64 ?
-        //     axios.get('https://pokeapi.co/api/v2/pokemon/64/')//* some issue with the 65th pokemon, so this line put in as a temporal fix.
-        //     :
-        //     axios.get(pokemon.url)
+        // const requestsArray = results.map(pokemon => {
+        //   return axios.get(pokemon.url)
         // })
+
+        const requestsArray = results.map((pokemon,i) => {
+          return i === 64 ?
+            axios.get('https://pokeapi.co/api/v2/pokemon/64/')//* some issue with the 65th pokemon, so this line put in as a temporal fix.
+            :
+            axios.get(pokemon.url)
+        })
         const response = await Promise.all(requestsArray)
         const pokemonsArray = response.map(res => res.data)
         pokemonsArray.sort((a, b) => a.id - b.id)
